@@ -4,26 +4,35 @@ const nextConfig: NextConfig = {
   // Optimasi gambar dari domain eksternal (API backend)
   images: {
     remotePatterns: [
+      // ── Backend development (localhost) ──────────────────
       {
         protocol: "http",
         hostname: "localhost",
         port: "3008",
       },
+
+      // ── Sumber gambar artikel dari seeder data ────────────
+      // Tambahkan hostname eksplisit sesuai sumber gambar yang digunakan di seeder.
+      // Hindari menggunakan hostname: "**" karena terlalu permisif di production.
+      //
+      // Contoh (aktifkan sesuai kebutuhan):
+      // {
+      //   protocol: "https",
+      //   hostname: "images.unsplash.com",
+      // },
+      // {
+      //   protocol: "https",
+      //   hostname: "upload.wikimedia.org",
+      // },
+
+      // ── CDN Detik.com (sumber gambar seeder data) ─────────
       {
         protocol: "https",
-        hostname: "awsimages.detik.net.id",
+        hostname: "akcdn.detik.net.id",
       },
       {
         protocol: "https",
         hostname: "*.detik.net.id",
-      },
-      {
-        protocol: "https",
-        hostname: "**",
-      },
-      {
-        protocol: "http",
-        hostname: "**",
       },
     ],
     // Format modern untuk performa LCP yang lebih baik

@@ -15,6 +15,7 @@ import Skeleton from "@/components/ui/Skeleton";
 import AdArticleMid from "@/components/ads/AdArticleMid.client";
 import AdStickyFooter from "@/components/ads/AdStickyFooter.client";
 
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
@@ -22,7 +23,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
-  if (!article) return { title: "Artikel Tidak Ditemukan" };
+  if (!article) return notFound();
 
   const plainText =
     article.content?.replace(/<[^>]*>/g, "").slice(0, 160) ?? "";
@@ -55,7 +56,7 @@ export default async function BeritaDetailPage({ params }: Props) {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
 
-  if (!article) notFound();
+  if (!article) return notFound();
 
   // JSON-LD Structured Data untuk Google Rich Results & Google News
   const jsonLdData = {

@@ -62,7 +62,7 @@ export default async function KategoriPage({ params, searchParams }: Props) {
   });
   const articles = articlesRes.data;
 
-  const feedItems = buildFeedItems(articles, 3);
+  const feedItems = buildFeedItems(articles, 6);
 
   // Preserve search params for pagination links (tanpa page)
   const paginationParams: Record<string, string> = {};
@@ -95,7 +95,9 @@ export default async function KategoriPage({ params, searchParams }: Props) {
                 item.kind === "article" ? (
                   <ArticleCard key={item.data.id} article={item.data} />
                 ) : (
-                  <AdInFeed key={`ad-infeed-${index}`} />
+                  <div key={`ad-infeed-${index}`} className="col-span-full">
+                    <AdInFeed />
+                  </div>
                 )
               )}
             </div>

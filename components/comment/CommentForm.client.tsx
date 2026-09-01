@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Send } from "lucide-react";
 
 type Props = {
@@ -8,6 +9,7 @@ type Props = {
 };
 
 export default function CommentForm({ articleId }: Props) {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
@@ -42,6 +44,8 @@ export default function CommentForm({ articleId }: Props) {
       setContent("");
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
+      // Re-fetch Server Components di route ini agar CommentList menampilkan komentar baru
+      router.refresh();
     } catch (err) {
       setError("Gagal mengirim komentar. Silakan coba lagi.");
       console.error("Comment submit error:", err);
@@ -78,7 +82,7 @@ export default function CommentForm({ articleId }: Props) {
       )}
       {success && (
         <p className="text-green-600 text-xs">
-          Komentar berhasil dikirim! Refresh halaman untuk melihat.
+          ✓ Komentar berhasil dikirim!
         </p>
       )}
 
