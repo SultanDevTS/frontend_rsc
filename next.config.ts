@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+ 
+  output: "standalone",
+
   // Optimasi gambar dari domain eksternal (API backend)
   images: {
     remotePatterns: [
@@ -10,20 +13,13 @@ const nextConfig: NextConfig = {
         hostname: "localhost",
         port: "3008",
       },
+      // ── Backend Docker service (production) ──────────────
+      {
+        protocol: "http",
+        hostname: "backend",
+        port: "3008",
+      },
 
-      // ── Sumber gambar artikel dari seeder data ────────────
-      // Tambahkan hostname eksplisit sesuai sumber gambar yang digunakan di seeder.
-      // Hindari menggunakan hostname: "**" karena terlalu permisif di production.
-      //
-      // Contoh (aktifkan sesuai kebutuhan):
-      // {
-      //   protocol: "https",
-      //   hostname: "images.unsplash.com",
-      // },
-      // {
-      //   protocol: "https",
-      //   hostname: "upload.wikimedia.org",
-      // },
 
       // ── CDN Detik.com (sumber gambar seeder data) ─────────
       {
