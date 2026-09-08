@@ -23,12 +23,6 @@ const nextConfig: NextConfig = {
         hostname: "localhost",
         port: "3008",
       },
-      // ── Backend Docker service (production) ──────────────
-      {
-        protocol: "http",
-        hostname: "backend",
-        port: "3008",
-      },
       // ── Backend production (VPS via domain) ──────────────
       {
         protocol: "https",
