@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Heart } from "lucide-react";
 
 type Props = {
@@ -9,6 +10,7 @@ type Props = {
 };
 
 export default function LikeButton({ articleId, initialLikes }: Props) {
+  const router = useRouter();
   const [likes, setLikes] = useState(initialLikes);
   const [loading, setLoading] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -36,6 +38,9 @@ export default function LikeButton({ articleId, initialLikes }: Props) {
         setLiked(true);
         // Simpan ke localStorage agar persisten setelah refresh
         localStorage.setItem(storageKey, "true");
+        // Paksa Next.js re-fetch Server Components (sync count dari DB)
+        // Bekerja bersama staleTimes: { dynamic: 0 } di next.config.ts
+        router.refresh();
       }
     } catch (error) {
       console.error("Gagal menyukai artikel:", error);
