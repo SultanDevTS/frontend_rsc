@@ -1,8 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
- 
+
   output: "standalone",
+
+  experimental: {
+    // Router Cache: 0 detik untuk halaman dynamic agar router.refresh()
+    // di CommentForm dan LikeButton langsung re-fetch dari server.
+    // Tanpa ini, komentar/like baru tidak muncul setelah submit.
+    staleTimes: {
+      dynamic: 0,  // halaman dengan fetch/async: tidak di-cache
+      static: 180, // halaman statis: cache 3 menit
+    },
+  },
 
   // Optimasi gambar dari domain eksternal
   images: {
@@ -18,6 +28,11 @@ const nextConfig: NextConfig = {
         protocol: "http",
         hostname: "backend",
         port: "3008",
+      },
+      // ── Backend production (VPS via domain) ──────────────
+      {
+        protocol: "https",
+        hostname: "news.beritauptodate.my.id",
       },
 
 
