@@ -1,5 +1,4 @@
-// app/kategori/[slug]/loading.tsx — Category Page Skeleton
-// Mencerminkan layout KategoriPage: header kategori → filter → grid artikel → pagination → sidebar
+
 
 export default function KategoriLoading() {
   return (

@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
  
   output: "standalone",
 
-  // Optimasi gambar dari domain eksternal (API backend)
+  // Optimasi gambar dari domain eksternal
   images: {
     remotePatterns: [
       // ── Backend development (localhost) ──────────────────
@@ -31,14 +31,14 @@ const nextConfig: NextConfig = {
         hostname: "*.detik.net.id",
       },
     ],
-    // Format modern untuk performa LCP yang lebih baik
+    // Format modern untuk performa LCP
     formats: ["image/avif", "image/webp"],
-    // Device sizes untuk responsive images (CLS optimization)
+    // Device sizes untuk responsive images
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
   },
 
-  // Compress response untuk performa lebih baik
+  // Compress response untuk performa
   compress: true,
 
   // Production-safe: disable x-powered-by header
@@ -73,6 +73,9 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  
 };
 
 export default nextConfig;
+
+

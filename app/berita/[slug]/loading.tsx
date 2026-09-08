@@ -1,5 +1,3 @@
-// app/berita/[slug]/loading.tsx — Article Detail Page Skeleton
-// Mencerminkan layout BeritaDetailPage: header → thumbnail → konten → like/share → related → komentar
 
 export default function BeritaDetailLoading() {
   return (
