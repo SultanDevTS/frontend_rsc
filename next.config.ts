@@ -2,7 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
 
-  output: "standalone",
+  output: "standalone", 
+  basePath: "/rsc-app",
 
   experimental: {
     // Router Cache: 0 detik untuk halaman dynamic agar router.refresh()
@@ -21,6 +22,12 @@ const nextConfig: NextConfig = {
       {
         protocol: "http",
         hostname: "localhost",
+        port: "3008",
+      },
+      // ── Backend Docker service (production) ──────────────
+      {
+        protocol: "http",
+        hostname: "backend",
         port: "3008",
       },
       // ── Backend production (VPS via domain) ──────────────
@@ -82,9 +89,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  
+
 };
 
 export default nextConfig;
-
-
