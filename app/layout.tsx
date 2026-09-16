@@ -11,7 +11,7 @@ import React from "react";
 const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID ?? "";
 const isAdSenseConfigured =
   ADSENSE_PUB_ID.startsWith("ca-pub-") &&
-  ADSENSE_PUB_ID !== "ca-pub-XXXXXXXXXXXXXXXX";
+  ADSENSE_PUB_ID !== "ca-pub-2081905719548415";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,8 +27,13 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
+<<<<<<< HEAD
     template: `%s | ${SITE_NAME}`,
     default: `${SITE_NAME} — Berita Terkini & Terpercaya`,
+=======
+    template: "%s | BeritaUpToDate",
+    default: "BeritaUpToDate — Berita Terkini & Terpercaya",
+>>>>>>> 41fc9f56035bb0386faf87930ed33ac97cfe0181
   },
   description: SITE_DESCRIPTION,
   metadataBase: new URL(
@@ -40,6 +45,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "id_ID",
+<<<<<<< HEAD
     siteName: SITE_NAME,
     title: `${SITE_NAME} — Berita Terkini & Terpercaya`,
     description: SITE_DESCRIPTION,
@@ -48,6 +54,16 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${SITE_NAME} — Berita Terkini & Terpercaya`,
     description: SITE_DESCRIPTION,
+=======
+    siteName: "BeritaUpToDate",
+    title: "BeritaUpToDate — Berita Terkini & Terpercaya",
+    description: "Portal berita terkini dan terpercaya dari berbagai kategori",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BeritaUpToDate — Berita Terkini & Terpercaya",
+    description: "Portal berita terkini dan terpercaya dari berbagai kategori",
+>>>>>>> 41fc9f56035bb0386faf87930ed33ac97cfe0181
   },
   robots: {
     index: true,

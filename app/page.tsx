@@ -34,6 +34,30 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+<<<<<<< HEAD
+=======
+      {/* ── HERO SECTION ───────────────────────────── */}
+      {featuredArticle && (
+        <section>
+          <Link href={`/berita/${featuredArticle.slug}`}>
+            <div className="relative w-full h-[420px] rounded-2xl overflow-hidden group">
+              {featuredArticle.thumbnail ? (
+                <Image
+                  src={featuredArticle.thumbnail}
+                  alt={featuredArticle.title}
+                  fill
+                  preload
+                  sizes="(max-width: 1152px) 100vw, 1152px"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500 text-lg">
+                  No Image
+                </div>
+              )}
+              {/* Overlay gelap di bawah agar teks terbaca */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+>>>>>>> 41fc9f56035bb0386faf87930ed33ac97cfe0181
 
       {/* ── FILTER KATEGORI ────────────────────────────────────────────────── */}
       {/* Suspense boundary terpisah: streaming segera setelah getCategories()  */}
