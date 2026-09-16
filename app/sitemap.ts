@@ -2,6 +2,10 @@ import type { MetadataRoute } from "next";
 import { getArticles, getCategories } from "@/lib/api";
 import type { Article } from "@/lib/api";
 
+// Sitemap dirender secara dinamis karena data artikel selalu fresh (cache: "no-store")
+export const dynamic = "force-dynamic";
+
+
 /**
  * Mengambil SELURUH artikel dari API dengan pagination loop.
  * Aman untuk artikel berapapun — tidak tergantung pada limit hardcode.

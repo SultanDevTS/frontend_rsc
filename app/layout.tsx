@@ -4,6 +4,8 @@ import Script from "next/script";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import "./global.css";
+import { SITE_NAME } from "@/lib/constants";
+import { SITE_DESCRIPTION } from "@/lib/constants";
 import React from "react";
 
 const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID ?? "";
@@ -25,10 +27,15 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
+<<<<<<< HEAD
+    template: `%s | ${SITE_NAME}`,
+    default: `${SITE_NAME} — Berita Terkini & Terpercaya`,
+=======
     template: "%s | BeritaUpToDate",
     default: "BeritaUpToDate — Berita Terkini & Terpercaya",
+>>>>>>> 41fc9f56035bb0386faf87930ed33ac97cfe0181
   },
-  description: "Portal berita terkini dan terpercaya dari berbagai kategori",
+  description: SITE_DESCRIPTION,
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   ),
@@ -38,6 +45,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "id_ID",
+<<<<<<< HEAD
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} — Berita Terkini & Terpercaya`,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} — Berita Terkini & Terpercaya`,
+    description: SITE_DESCRIPTION,
+=======
     siteName: "BeritaUpToDate",
     title: "BeritaUpToDate — Berita Terkini & Terpercaya",
     description: "Portal berita terkini dan terpercaya dari berbagai kategori",
@@ -46,6 +63,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "BeritaUpToDate — Berita Terkini & Terpercaya",
     description: "Portal berita terkini dan terpercaya dari berbagai kategori",
+>>>>>>> 41fc9f56035bb0386faf87930ed33ac97cfe0181
   },
   robots: {
     index: true,

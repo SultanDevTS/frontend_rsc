@@ -34,7 +34,7 @@ const nextConfig: NextConfig = {
       // ── Backend production (VPS via domain) ──────────────
       {
         protocol: "https",
-        hostname: "news.beritauptodate.my.id",
+        hostname: "rsc.beritauptodate.my.id",
       },
       // ── CDN Detik.com
       {
