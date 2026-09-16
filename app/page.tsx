@@ -10,7 +10,7 @@ import AdInFeed from "@/components/ads/AdInFeed.client";
 import { formatDate } from "@/utils/formatDate";
 
 export const metadata: Metadata = {
-  title: "Beranda",
+  title: "Beranda | BeritaUpToDate",
   description: "Baca berita terkini dari berbagai kategori",
 };
 

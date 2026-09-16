@@ -1,20 +1,21 @@
 import type { NextConfig } from "next";
+import bundleAnalyzer from "@next/bundle-analyzer";
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+})
 
 const nextConfig: NextConfig = {
 
-  output: "standalone", 
-  basePath: "/rsc-app",
+  output: "standalone",
+  // basePath: "/rsc-app",
 
   experimental: {
-    // Router Cache: 0 detik untuk halaman dynamic agar router.refresh()
-    // di CommentForm dan LikeButton langsung re-fetch dari server.
-    // Tanpa ini, komentar/like baru tidak muncul setelah submit.
     staleTimes: {
-      dynamic: 0,  // halaman dengan fetch/async: tidak di-cache
-      static: 180, // halaman statis: cache 3 menit
+      dynamic: 0,  
+      static: 180, 
     },
   },
-
   // Optimasi gambar dari domain eksternal
   images: {
     remotePatterns: [
@@ -35,9 +36,7 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "news.beritauptodate.my.id",
       },
-
-
-      // ── CDN Detik.com (sumber gambar seeder data) ─────────
+      // ── CDN Detik.com
       {
         protocol: "https",
         hostname: "akcdn.detik.net.id",
@@ -92,4 +91,5 @@ const nextConfig: NextConfig = {
 
 };
 
-export default nextConfig;
+
+export default withBundleAnalyzer(nextConfig);

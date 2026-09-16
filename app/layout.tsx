@@ -14,6 +14,7 @@ const isAdSenseConfigured =
 const inter = Inter({
   subsets: ["latin"],
   display: "swap", // CLS: mencegah layout shift saat font loading
+  preload: false, // tidak download saat build, dimuat saat runtime
 });
 
 export const viewport: Viewport = {

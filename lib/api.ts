@@ -1,52 +1,20 @@
 import sanitize from "sanitize-html";
+import type {
+  Category,
+  ArticleCategory,
+  Article,
+  Comment,
+  PaginatedResponse,
+} from "./types";
+
+// Re-export semua types agar semua existing import dari "@/lib/api" tetap berfungsi
+export type { Category, ArticleCategory, Article, Comment, PaginatedResponse };
 
 // Server-side only env var — tidak terekspos ke client bundle
 const BASE_URL = process.env.API_URL || "http://localhost:3008/api";
 
-// ── Types ──────────────────────────────────────────────────
-
-export type Category = {
-  id: number;
-  name: string;
-  slug: string;
-  createdAt: string;
-};
-
-export type ArticleCategory = {
-  name: string;
-  slug: string;
-};
-
-export type Article = {
-  id: number;
-  title: string;
-  author: string;
-  slug: string;
-  content?: string;
-  thumbnail: string;
-  category: ArticleCategory;
-  publishedAt: string;
-  likes?: number;
-};
-
-export type Comment = {
-  id: number;
-  articleId: number;
-  name: string;
-  content: string;
-  createdAt: string;
-};
-
-export type PaginatedResponse<T> = {
-  success: boolean;
-  data: T[];
-  meta: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-  };
-};
+// Types didefinisikan di lib/types.ts dan di-re-export di atas
+// (dipindahkan agar Client Component bisa import type tanpa menarik sanitize-html)
 
 type ApiResponse<T> = {
   success: boolean;

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Category } from "@/lib/api";
+import type { Category } from "@/lib/types";
 import { Menu, X } from "lucide-react";
 import SearchBar from "@/components/layout/SearchBar.client";
 
