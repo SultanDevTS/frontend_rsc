@@ -9,7 +9,7 @@ import React from "react";
 const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID ?? "";
 const isAdSenseConfigured =
   ADSENSE_PUB_ID.startsWith("ca-pub-") &&
-  ADSENSE_PUB_ID !== "ca-pub-XXXXXXXXXXXXXXXX";
+  ADSENSE_PUB_ID !== "ca-pub-2081905719548415";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,8 +25,8 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | PortalNews",
-    default: "PortalNews — Berita Terkini & Terpercaya",
+    template: "%s | BeritaUpToDate",
+    default: "BeritaUpToDate — Berita Terkini & Terpercaya",
   },
   description: "Portal berita terkini dan terpercaya dari berbagai kategori",
   metadataBase: new URL(
@@ -38,13 +38,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "id_ID",
-    siteName: "PortalNews",
-    title: "PortalNews — Berita Terkini & Terpercaya",
+    siteName: "BeritaUpToDate",
+    title: "BeritaUpToDate — Berita Terkini & Terpercaya",
     description: "Portal berita terkini dan terpercaya dari berbagai kategori",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PortalNews — Berita Terkini & Terpercaya",
+    title: "BeritaUpToDate — Berita Terkini & Terpercaya",
     description: "Portal berita terkini dan terpercaya dari berbagai kategori",
   },
   robots: {

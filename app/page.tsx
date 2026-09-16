@@ -75,7 +75,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                   src={featuredArticle.thumbnail}
                   alt={featuredArticle.title}
                   fill
-                  priority
+                  preload
                   sizes="(max-width: 1152px) 100vw, 1152px"
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
