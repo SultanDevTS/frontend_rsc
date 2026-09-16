@@ -50,16 +50,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function KategoriPage({ params, searchParams }: Props) {
   const { slug } = await params;
   const { page, sort } = await searchParams;
-  const category = await getCategoryBySlug(slug);
+  const currentPage = Math.max(1, Number(page) || 1);
+  // Fetch paralel — kedua request berjalan bersamaan, tidak menunggu satu per satu
+  const [category, articlesRes] = await Promise.all([
+    getCategoryBySlug(slug),
+    getArticles({
+      category: slug,
+      page: currentPage,
+      sort: sort || "newest",
+    }),
+  ]);
 
   if (!category) notFound();
 
-  const currentPage = Math.max(1, Number(page) || 1);
-  const articlesRes = await getArticles({
-    category: slug,
-    page: currentPage,
-    sort: sort || "newest",
-  });
   const articles = articlesRes.data;
 
   const feedItems = buildFeedItems(articles, 6);
