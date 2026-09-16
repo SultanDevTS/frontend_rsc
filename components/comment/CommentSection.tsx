@@ -18,7 +18,7 @@ export default async function CommentSection({ articleId }: Props) {
       </h2>
 
       <CommentForm articleId={articleId} />
-      <CommentList comments={comments} />
+      <CommentList initialComments={comments} />
     </section>
   );
 }

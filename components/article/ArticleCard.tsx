@@ -17,7 +17,7 @@ export default function ArticleCard({ article }: Props) {
                         border border-gray-100 hover:shadow-md transition-shadow"
     >
       {/* Thumbnail */}
-      <Link href={`/berita/${article.slug}`}>
+      <Link href={`/berita/${article.slug}`} prefetch={false}>
         <div className="relative w-full h-48">
           {article.thumbnail ? (
             <Image
@@ -39,7 +39,7 @@ export default function ArticleCard({ article }: Props) {
         {/* CategoryBadge menerima { name, slug } — sesuai ArticleCategory */}
         <CategoryBadge category={article.category} />
 
-        <Link href={`/berita/${article.slug}`}>
+        <Link href={`/berita/${article.slug}`} prefetch={false}>
           <h2
             className="font-bold text-gray-900 text-base leading-snug
                          hover:text-blue-600 transition-colors line-clamp-2"

@@ -1,14 +1,16 @@
 // components/comment/CommentList.tsx — Server Component
-
 import { Comment } from "@/lib/api";
 import { formatDate } from "@/utils/formatDate";
 
+
+
+
 type Props = {
-  comments: Comment[];
+  initialComments: Comment[];
 };
 
-export default function CommentList({ comments }: Props) {
-  if (comments.length === 0) {
+export default function CommentList({ initialComments }: Props) {
+  if (initialComments.length === 0) {
     return (
       <p className="text-gray-400 text-sm text-center py-8">
         Belum ada komentar. Jadilah yang pertama berkomentar!
@@ -18,7 +20,7 @@ export default function CommentList({ comments }: Props) {
 
   return (
     <div className="space-y-4">
-      {comments.map((comment) => (
+      {initialComments.map((comment) => (
         <div
           key={comment.id}
           className="bg-white border border-gray-100 rounded-xl p-4 space-y-2"

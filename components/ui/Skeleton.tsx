@@ -139,6 +139,71 @@ export function PaginationSkeleton({ pages = 5 }: { pages?: number }) {
   );
 }
 
+// ─── FILTER KATEGORI ─────────────────────────────────────────────────────────
+
+/**
+ * Skeleton baris filter kategori: label + pill "Semua" + 5 pill kategori.
+ * Dipakai sebagai fallback <Suspense> di CategoryFilterSection.
+ * Dimensi pill disesuaikan dengan layout asli di page.tsx.
+ */
+export function CategoryFilterSkeleton() {
+  return (
+    <section aria-hidden="true">
+      <div className="flex items-center gap-2 flex-wrap">
+        {/* Label "Kategori:" */}
+        <div className="h-4 w-16 bg-gray-200 rounded mr-2" />
+        {/* Pill "Semua" */}
+        <div className="h-8 w-16 rounded-full bg-gray-200" />
+        {/* 5 pill kategori, lebar bervariasi */}
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div
+            key={i}
+            className="h-8 rounded-full bg-gray-200"
+            style={{ width: `${64 + i * 12}px` }}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ─── ARTICLE FEED ─────────────────────────────────────────────────────────────
+
+/**
+ * Skeleton untuk seluruh section artikel beranda:
+ * hero placeholder + heading + grid 6 kartu + sidebar.
+ * Dipakai sebagai fallback <Suspense> di ArticleFeedSection.
+ */
+export function ArticleFeedSkeleton() {
+  return (
+    <div className="space-y-8">
+      {/* Hero placeholder */}
+      <section aria-hidden="true">
+        <div className="relative w-full h-[420px] rounded-2xl overflow-hidden bg-gray-200" />
+      </section>
+
+      {/* Main content + sidebar */}
+      <div className="flex flex-col lg:flex-row gap-8 items-start">
+        {/* LEFT: artikel grid */}
+        <section className="flex-1 min-w-0 space-y-4" aria-hidden="true">
+          <div className="flex items-center justify-between">
+            <div className="h-6 w-36 bg-gray-200 rounded" />
+            <div className="h-4 w-24 bg-gray-100 rounded" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <ArticleCardSkeleton key={i} />
+            ))}
+          </div>
+        </section>
+
+        {/* RIGHT: sidebar */}
+        <SidebarSkeleton />
+      </div>
+    </div>
+  );
+}
+
 // ─── KOMENTAR ────────────────────────────────────────────────────────────────
 
 /**
