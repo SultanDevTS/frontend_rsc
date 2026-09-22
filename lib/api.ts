@@ -77,6 +77,16 @@ export function sanitizeContent(html: string): string {
   return sanitize(html, SANITIZE_OPTIONS);
 }
 
+// Deteksi sinyal kontrol internal Next.js untuk dynamic server rendering
+function isDynamicServerError(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "digest" in error &&
+    (error as { digest: string }).digest === "DYNAMIC_SERVER_USAGE"
+  );
+}
+
 // ── API Functions (Server Component only) ─────────────────
 export const getCategories: () => Promise<Category[]> = cache(
   async (): Promise<Category[]> => {
@@ -88,6 +98,7 @@ export const getCategories: () => Promise<Category[]> = cache(
       const json: ApiResponse<Category[]> = await res.json();
       return json.data || [];
     } catch (error) {
+      if (isDynamicServerError(error)) throw error;
       console.error("[API Error] getCategories failed:", error);
       return [];
     }
@@ -104,6 +115,7 @@ export const getCategoryBySlug: (slug: string) => Promise<Category | null> = cac
       const json: ApiResponse<Category> = await res.json();
       return json.data;
     } catch (error) {
+      if (isDynamicServerError(error)) throw error;
       console.error(`[API Error] getCategoryBySlug(${slug}) failed:`, error);
       return null;
     }
@@ -142,6 +154,7 @@ export async function getArticles(
     if (!res.ok) return emptyResponse;
     return await res.json();
   } catch (error) {
+    if (isDynamicServerError(error)) throw error;
     console.error("[API Error] getArticles failed:", error);
     return emptyResponse;
   }
@@ -156,6 +169,7 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
     const json: ApiResponse<Article> = await res.json();
     return json.data;
   } catch (error) {
+    if (isDynamicServerError(error)) throw error;
     console.error(`[API Error] getArticleBySlug(${slug}) failed:`, error);
     return null;
   }
@@ -171,6 +185,7 @@ export async function getComments(articleId: number): Promise<Comment[]> {
     const json: ApiResponse<Comment[]> = await res.json();
     return json.data || [];
   } catch (error) {
+    if (isDynamicServerError(error)) throw error;
     console.error(
       `[API Error] getComments(${articleId}) failed:`,
       error,
@@ -194,6 +209,7 @@ export async function getRelatedArticles(
       .filter((article) => article.slug !== excludeSlug)
       .slice(0, limit);
   } catch (error) {
+    if (isDynamicServerError(error)) throw error;
     console.error("[API Error] getRelatedArticles failed:", error);
     return [];
   }

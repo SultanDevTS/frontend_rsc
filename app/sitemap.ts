@@ -2,10 +2,14 @@ import type { MetadataRoute } from "next";
 import { getArticles, getCategories } from "@/lib/api";
 import type { Article } from "@/lib/api";
 
+
+export const dynamic = "force-dynamic"
 /**
  * Mengambil SELURUH artikel dari API dengan pagination loop.
  * Aman untuk artikel berapapun — tidak tergantung pada limit hardcode.
  */
+
+
 async function fetchAllArticles(): Promise<Article[]> {
   const PAGE_SIZE = 100; // Ambil 100 per request untuk efisiensi
   const allArticles: Article[] = [];
