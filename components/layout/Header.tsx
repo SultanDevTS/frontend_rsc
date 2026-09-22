@@ -24,7 +24,7 @@ export default async function Header() {
         {/* Main navbar row */}
         <div className="h-16 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-1 shrink-0">
+          <Link href="/" prefetch={false} className="flex items-center gap-1 shrink-0">
             <span className="text-2xl font-extrabold tracking-tight text-blue-600">
               Berita
             </span>
@@ -37,6 +37,7 @@ export default async function Header() {
           <nav className="hidden lg:flex items-center gap-1">
             <Link
               href="/"
+              prefetch={false}
               className="px-3 py-2 text-sm font-semibold text-gray-700 rounded-lg
                          hover:bg-blue-50 hover:text-blue-600 transition-all duration-200"
             >
