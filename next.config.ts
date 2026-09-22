@@ -1,0 +1,61 @@
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  // ── TAMBAHKAN BARIS INI (Wajib untuk Docker standalone build) ──
+  output: "standalone",
+
+  // Optimasi gambar dari domain eksternal (API backend)
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "3008",
+      },
+      {
+        protocol: "https",
+        hostname: "akcdn.detik.net.id",
+      },
+      {
+        protocol: "https",
+        hostname: "*.detik.net.id",
+      },
+    ],
+    // formats: ["image/avif", "image/webp"],
+    formats: ["image/webp"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
+
+  compress: true,
+  poweredByHeader: false,
+  reactStrictMode: true,
+
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "X-XSS-Protection",
+            value: "1; mode=block",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+        ],
+      },
+    ];
+  },
+};
+
+export default nextConfig;
