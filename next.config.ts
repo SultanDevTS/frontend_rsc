@@ -1,17 +1,42 @@
 import type { NextConfig } from "next";
+import bundleAnalyzer from "@next/bundle-analyzer";
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+})
 
 const nextConfig: NextConfig = {
-  // ── TAMBAHKAN BARIS INI (Wajib untuk Docker standalone build) ──
-  output: "standalone",
 
-  // Optimasi gambar dari domain eksternal (API backend)
+  output: "standalone",
+  // basePath: "/rsc-app",
+
+  experimental: {
+    staleTimes: {
+      dynamic: 0,  
+      static: 180, 
+    },
+  },
+  // Optimasi gambar dari domain eksternal
   images: {
     remotePatterns: [
+      // ── Backend development (localhost) ──────────────────
       {
         protocol: "http",
         hostname: "localhost",
         port: "3008",
       },
+      // ── Backend Docker service (production) ──────────────
+      {
+        protocol: "http",
+        hostname: "backend",
+        port: "3008",
+      },
+      // ── Backend production (VPS via domain) ──────────────
+      {
+        protocol: "https",
+        hostname: "rsc.beritauptodate.my.id",
+      },
+      // ── CDN Detik.com
       {
         protocol: "https",
         hostname: "akcdn.detik.net.id",
@@ -27,10 +52,16 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
+  // Compress response untuk performa
   compress: true,
+
+  // Production-safe: disable x-powered-by header
   poweredByHeader: false,
+
+  // Strict mode React untuk mendeteksi bug
   reactStrictMode: true,
 
+  // Headers keamanan untuk production
   async headers() {
     return [
       {
@@ -56,6 +87,8 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
 };
 
-export default nextConfig;
+
+export default withBundleAnalyzer(nextConfig);

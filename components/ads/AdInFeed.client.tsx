@@ -26,7 +26,7 @@ export default function AdInFeed() {
         placeholderWidth="100%"
         placeholderLabel="In-Feed Ad · Native"
         className="w-full"
-      />
+      />  
     </div>
   );
 }

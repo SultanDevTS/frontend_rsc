@@ -56,7 +56,6 @@ type ApiResponse<T> = {
 };
 
 // ── Sanitize HTML (mencegah XSS) ──────────────────────────
-
 const SANITIZE_OPTIONS: sanitize.IOptions = {
   allowedTags: sanitize.defaults.allowedTags.concat([
     "img",
@@ -74,13 +73,11 @@ const SANITIZE_OPTIONS: sanitize.IOptions = {
   },
   allowedIframeHostnames: ["www.youtube.com", "player.vimeo.com"],
 };
-
 export function sanitizeContent(html: string): string {
   return sanitize(html, SANITIZE_OPTIONS);
 }
 
 // ── API Functions (Server Component only) ─────────────────
-
 export const getCategories: () => Promise<Category[]> = cache(
   async (): Promise<Category[]> => {
     try {

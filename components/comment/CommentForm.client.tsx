@@ -44,7 +44,6 @@ export default function CommentForm({ articleId }: Props) {
       setContent("");
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
-      // Re-fetch Server Components di route ini agar CommentList menampilkan komentar baru
       router.refresh();
     } catch (err) {
       setError("Gagal mengirim komentar. Silakan coba lagi.");

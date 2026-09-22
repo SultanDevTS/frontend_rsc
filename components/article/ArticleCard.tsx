@@ -26,9 +26,8 @@ export default function ArticleCard({ article, priority = false }: Props) {
               alt={article.title}
               fill
               priority={priority}
-              // perubahan untuk memperbaiki lcp
-              fetchPriority={priority ? "high" : undefined}
-              quality={70}
+	            fetchPriority={priority ? "high" : undefined}
+	            quality={70}
               sizes="(max-width: 640px) 280px, (max-width: 1024px) 50vw, 33vw"
               className="object-cover"
             />

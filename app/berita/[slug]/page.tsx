@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { getArticleBySlug } from "@/lib/api";
 import ArticleHeader from "@/components/article/ArticleHeader";
@@ -10,6 +11,7 @@ import LikeButton from "@/components/article/LikeButton.client";
 import RelatedArticles from "@/components/article/RelatedArticles";
 import CommentSection from "@/components/comment/CommentSection";
 import JsonLd from "@/components/ui/JsonLd";
+import Skeleton from "@/components/ui/Skeleton";
 import AdArticleMid from "@/components/ads/AdArticleMid.client";
 import AdStickyFooter from "@/components/ads/AdStickyFooter.client";
 
@@ -128,8 +130,19 @@ export default async function BeritaDetailPage({ params }: Props) {
           excludeSlug={article.slug}
         />
 
-        {/* Comment Section — Server Component */}
-        <CommentSection articleId={article.id} />
+        {/* Comment Section — Server Component wrapper with Suspense */}
+        <Suspense
+          fallback={
+            <div className="space-y-4 animate-pulse">
+              <Skeleton height={24} width={200} />
+              <Skeleton height={100} className="w-full rounded-xl" />
+              <Skeleton height={60} className="w-full rounded-xl" />
+              <Skeleton height={60} className="w-full rounded-xl" />
+            </div>
+          }
+        >
+          <CommentSection articleId={article.id} />
+        </Suspense>
 
         {/* Back link */}
         <div className="pt-6 border-t border-gray-200">
