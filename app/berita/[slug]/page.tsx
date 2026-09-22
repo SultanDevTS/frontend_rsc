@@ -11,6 +11,7 @@ import LikeButton from "@/components/article/LikeButton.client";
 import RelatedArticles from "@/components/article/RelatedArticles";
 import CommentSection from "@/components/comment/CommentSection";
 import JsonLd from "@/components/ui/JsonLd";
+import { SITE_NAME } from "@/lib/constants";
 import Skeleton from "@/components/ui/Skeleton";
 import AdArticleMid from "@/components/ads/AdArticleMid.client";
 import AdStickyFooter from "@/components/ads/AdStickyFooter.client";
@@ -78,7 +79,7 @@ export default async function BeritaDetailPage({ params }: Props) {
     },
     publisher: {
       "@type": "Organization",
-      name: "PortalNews",
+      name: `${SITE_NAME}`,
     },
     articleSection: article.category.name,
   };

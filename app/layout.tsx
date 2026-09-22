@@ -4,6 +4,7 @@ import Script from "next/script";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import "./global.css";
+import { SITE_NAME, SITE_DESCRIPTION } from "@/lib/constants";
 import React from "react";
 
 const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID ?? "";
@@ -24,10 +25,10 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | PortalNews",
-    default: "PortalNews — Berita Terkini & Terpercaya",
+    template: `%s | ${SITE_NAME}`,
+    default: `${SITE_NAME} — Berita Terkini & Terpercaya`,
   },
-  description: "Portal berita terkini dan terpercaya dari berbagai kategori",
+  description: `${SITE_DESCRIPTION}`,
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   ),
@@ -37,14 +38,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "id_ID",
-    siteName: "PortalNews",
-    title: "PortalNews — Berita Terkini & Terpercaya",
-    description: "Portal berita terkini dan terpercaya dari berbagai kategori",
+    siteName: `${SITE_NAME}`,
+    title: `${SITE_NAME} — Berita Terkini & Terpercaya`,
+    description: `${SITE_DESCRIPTION}`,
   },
   twitter: {
     card: "summary_large_image",
-    title: "PortalNews — Berita Terkini & Terpercaya",
-    description: "Portal berita terkini dan terpercaya dari berbagai kategori",
+    title: `${SITE_NAME} — Berita Terkini & Terpercaya`,
+    description: `${SITE_DESCRIPTION}`,
   },
   robots: {
     index: true,

@@ -1,7 +1,7 @@
 // ── Site Info ──────────────────────────────────────────────
 export const SITE_NAME = "BeritaUpToDate";
 export const SITE_DESCRIPTION =
-  "Portal berita terkini dan terpercaya dari berbagai kategori";
+  "Portal berita terkini dan terupdate";
 
 // ── Pagination ─────────────────────────────────────────────
 export const DEFAULT_PAGE_SIZE = 10;

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getCategoryBySlug, getArticles } from "@/lib/api";
 import type { Article } from "@/lib/api";
+import { SITE_NAME, SITE_DESCRIPTION } from "@/lib/constants";
 import ArticleCard from "@/components/article/ArticleCard";
 import CategoryHeader from "@/components/category/CategoryHeader";
 import FilterBar from "@/components/category/FilterBar.client";
@@ -41,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `Kategori: ${category.name}`,
     description: `Baca berita terbaru dalam kategori ${category.name}`,
     openGraph: {
-      title: `Kategori: ${category.name} | PortalNews`,
+      title: `Kategori: ${category.name} | ${SITE_NAME}`,
       description: `Baca berita terbaru dalam kategori ${category.name}`,
     },
   };
