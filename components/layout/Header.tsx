@@ -42,7 +42,6 @@ export default async function Header() {
             >
               Beranda
             </Link>
-
             <span className="w-px h-5 bg-gray-200 mx-1" />
 
             <NavMenu categories={visibleCategories} />
@@ -84,6 +83,7 @@ export default async function Header() {
                       <Link
                         key={cat.id}
                         href={`/kategori/${cat.slug}`}
+                        prefetch={false}
                         className="block px-4 py-2.5 text-sm text-gray-600
                                    hover:bg-blue-50 hover:text-blue-600 transition-colors"
                       >

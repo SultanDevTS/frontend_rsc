@@ -8,9 +8,10 @@ import { formatDate } from "@/utils/formatDate";
 
 type Props = {
   article: Article;
+  priority?: boolean;
 };
 
-export default function ArticleCard({ article }: Props) {
+export default function ArticleCard({ article, priority = false }: Props) {
   return (
     <article
       className="bg-white rounded-xl overflow-hidden shadow-sm 
@@ -24,7 +25,10 @@ export default function ArticleCard({ article }: Props) {
               src={article.thumbnail}
               alt={article.title}
               fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              priority={priority}
+	      fetchPriority={priority ? "high" : undefined}
+	      quality={70}
+              sizes="(max-width: 640px) 280px, (max-width: 1024px) 50vw, 33vw"
               className="object-cover"
             />
           ) : (

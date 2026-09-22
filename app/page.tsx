@@ -1,15 +1,18 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { getArticles, getCategories } from "@/lib/api";
+import type { Article, Category } from "@/lib/api";
+import ArticleCard from "@/components/article/ArticleCard";
 import AdBillboard from "@/components/ads/AdBillboard.client";
-import CategoryFilterSection from "@/components/home/CategoryFilterSection";
-import ArticleFeedSection from "@/components/home/ArticleFeedSection";
-import {
-  CategoryFilterSkeleton,
-  ArticleFeedSkeleton,
-} from "@/components/ui/Skeleton";
+import AdMediumRect from "@/components/ads/AdMediumRect.client";
+import AdInFeed from "@/components/ads/AdInFeed.client";
+import { formatDate } from "@/utils/formatDate";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Beranda | BeritaUpToDate",
+  title: "Beranda",
   description: "Baca berita terkini dari berbagai kategori",
 };
 
@@ -18,24 +21,52 @@ type HomePageProps = {
 };
 
 /**
- * Root page — Server Component.
- *
- * Tidak melakukan fetch apapun secara langsung.
- * Setiap bagian konten dibungkus Suspense boundary sendiri agar
- * bisa streaming secara independen:
- *
- *  1. CategoryFilterSection  → streaming setelah getCategories() selesai
- *  2. ArticleFeedSection     → streaming setelah getArticles() selesai
- *
- * Shell halaman (wrapper div + AdBillboard) langsung tampil tanpa blocking.
+ * Menyisipkan slot iklan setiap `every` artikel.
+ * AdSense menentukan konten iklan otomatis — tidak perlu variant manual.
  */
+function buildFeedItems(articles: Article[], every: number = 3) {
+  const items: Array<
+    | { kind: "article"; data: Article }
+    | { kind: "ad" }
+  > = [];
+
+  articles.forEach((article, index) => {
+    items.push({ kind: "article", data: article });
+    // Sisipkan slot iklan setiap N artikel (tidak setelah artikel terakhir)
+    if ((index + 1) % every === 0 && index + 1 < articles.length) {
+      items.push({ kind: "ad" });
+    }
+  });
+
+  return items;
+}
+
+
 export default async function HomePage({ searchParams }: HomePageProps) {
   const { search, category } = await searchParams;
 
+  // Fetch 2 data sekaligus secara paralel
+  const [articlesRes, categories] = await Promise.all([
+    getArticles({ search, category }),
+    getCategories(),
+  ]);
+
+  // Nama kategori aktif
+  const activeCategory = category
+    ? categories.find((c: Category) => c.slug === category) ?? null
+    : null;
+
+  const articles = articlesRes.data;
+
+ 
+  
+  const featuredArticle = search ? null : articles[0];
+  const gridArticles = search ? articles : articles.slice(1, 7);
+
+  const feedItems = buildFeedItems(gridArticles, 3);
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
-<<<<<<< HEAD
-=======
       {/* ── HERO SECTION ───────────────────────────── */}
       {featuredArticle && (
         <section>
@@ -46,7 +77,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                   src={featuredArticle.thumbnail}
                   alt={featuredArticle.title}
                   fill
-                  preload
+                  priority
                   sizes="(max-width: 1152px) 100vw, 1152px"
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -57,27 +88,141 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               )}
               {/* Overlay gelap di bawah agar teks terbaca */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
->>>>>>> 41fc9f56035bb0386faf87930ed33ac97cfe0181
 
-      {/* ── FILTER KATEGORI ────────────────────────────────────────────────── */}
-      {/* Suspense boundary terpisah: streaming segera setelah getCategories()  */}
-      {/* selesai, tanpa menunggu getArticles().                                */}
-      <Suspense fallback={<CategoryFilterSkeleton />}>
-        <CategoryFilterSection category={category} />
-      </Suspense>
+              {/* Teks di atas gambar */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                <span
+                  className="inline-block bg-blue-600 text-xs font-semibold 
+                  px-3 py-1 rounded-full mb-3"
+                >
+                  {featuredArticle.category?.name}
+                </span>
+                <h1
+                  className="text-2xl md:text-3xl font-bold leading-tight 
+                  line-clamp-2 mb-2"
+                >
+                  {featuredArticle.title}
+                </h1>
+                <div className="flex items-center gap-3 text-white/70 text-sm">
+                  <span>{featuredArticle.author}</span>
+                  <span>•</span>
+                  <span>{formatDate(featuredArticle.publishedAt)}</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </section>
+      )}
 
-      {/* ── BILLBOARD AD ───────────────────────────────────────────────────── */}
-      {/* Tidak ada fetch → langsung render bersama shell.                      */}
+      {/* ── BILLBOARD AD (di bawah hero, sebelum filter) ── */}
       {!search && <AdBillboard />}
 
-      {/* ── HERO + GRID ARTIKEL + SIDEBAR ──────────────────────────────────── */}
-      {/* Suspense boundary terpisah: streaming setelah getArticles() selesai.  */}
-      {/* ArticleFeedSkeleton menampilkan hero placeholder + 6 card skeleton    */}
-      {/* agar layout tidak loncat (CLS = 0).                                  */}
-      <Suspense fallback={<ArticleFeedSkeleton />}>
-        <ArticleFeedSection search={search} category={category} />
-      </Suspense>
+      {/* ── FILTER KATEGORI ────────────────────────── */}
+      <section>
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-sm font-semibold text-gray-500 mr-2">
+            Kategori:
+          </span>
 
+          {/* Pill "Semua" — reset filter */}
+          <Link
+            href="/"
+            className={`px-4 py-1.5 rounded-full border text-sm font-medium transition-all ${
+              !category
+                ? "bg-blue-600 text-white border-blue-600"
+                : "border-gray-200 text-gray-600 hover:bg-blue-600 hover:text-white hover:border-blue-600"
+            }`}
+          >
+            Semua
+          </Link>
+
+          {categories.map((cat: Category) => {
+            const isActive = cat.slug === category;
+            return (
+              <Link
+                key={cat.id}
+                href={`/?category=${cat.slug}`}
+                className={`px-4 py-1.5 rounded-full border text-sm font-medium transition-all ${
+                  isActive
+                    ? "bg-blue-600 text-white border-blue-600"
+                    : "border-gray-200 text-gray-600 hover:bg-blue-600 hover:text-white hover:border-blue-600"
+                }`}
+              >
+                {cat.name}
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ── MAIN CONTENT + SIDEBAR (2 kolom) ────────── */}
+      <div className="flex flex-col lg:flex-row gap-8 items-start">
+
+        {/* ── LEFT: Artikel Grid ───────────────────── */}
+        <section className="flex-1 min-w-0 space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-gray-900">
+              {search ? (
+                <>
+                  Hasil pencarian untuk{" "}
+                  <span className="text-blue-600">&ldquo;{search}&rdquo;</span>
+                </>
+              ) : activeCategory ? (
+                <>
+                  Kategori:{" "}
+                  <span className="text-blue-600">{activeCategory.name}</span>
+                </>
+              ) : (
+                "Artikel Terbaru"
+              )}
+            </h2>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-gray-400">
+                {articlesRes.meta.total} artikel tersedia
+              </span>
+              {(search || category) && (
+                <Link
+                  href="/"
+                  className="text-sm text-blue-600 hover:underline"
+                >
+                  ✕ Hapus filter
+                </Link>
+              )}
+            </div>
+          </div>
+
+          {feedItems.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              {feedItems.map((item, index) =>
+                item.kind === "article" ? (
+                  <ArticleCard key={item.data.id} article={item.data} />
+                ) : (
+                  <div key={`ad-infeed-${index}`} className="col-span-full">
+                    <AdInFeed/>
+                    </div>
+                )
+              )}
+            </div>
+          ) : (
+            <p className="text-gray-400 text-center py-12">
+              {search
+                ? `Tidak ada artikel yang cocok dengan "${search}".`
+                : "Belum ada artikel tersedia."}
+            </p>
+          )}
+        </section>
+
+        {/* ── RIGHT: Sidebar ───────────────────────── */}
+        {!search && (
+          <aside className="w-full lg:w-[300px] shrink-0 space-y-6">
+            {/* Medium Rectangle Ad #1 */}
+            <AdMediumRect />
+
+            {/* Medium Rectangle Ad #2 (slot yang sama, AdSense rotate otomatis) */}
+            <AdMediumRect />
+          </aside>
+        )}
+      </div>
     </div>
   );
 }

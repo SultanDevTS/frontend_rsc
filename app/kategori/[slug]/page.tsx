@@ -51,7 +51,8 @@ export default async function KategoriPage({ params, searchParams }: Props) {
   const { slug } = await params;
   const { page, sort } = await searchParams;
   const currentPage = Math.max(1, Number(page) || 1);
-  // Fetch paralel — kedua request berjalan bersamaan, tidak menunggu satu per satu
+
+  // Fetch category and articles in parallel (eliminates waterfall)
   const [category, articlesRes] = await Promise.all([
     getCategoryBySlug(slug),
     getArticles({
@@ -64,7 +65,6 @@ export default async function KategoriPage({ params, searchParams }: Props) {
   if (!category) notFound();
 
   const articles = articlesRes.data;
-
   const feedItems = buildFeedItems(articles, 6);
 
   // Preserve search params for pagination links (tanpa page)
@@ -96,7 +96,11 @@ export default async function KategoriPage({ params, searchParams }: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {feedItems.map((item, index) =>
                 item.kind === "article" ? (
-                  <ArticleCard key={item.data.id} article={item.data} />
+                  <ArticleCard
+                    key={item.data.id}
+                    article={item.data}
+                    priority={index === 0}
+                  />
                 ) : (
                   <div key={`ad-infeed-${index}`} className="col-span-full">
                     <AdInFeed />
@@ -127,3 +131,4 @@ export default async function KategoriPage({ params, searchParams }: Props) {
     </div>
   );
 }
+

@@ -1,21 +1,53 @@
+import { cache } from "react";
 import sanitize from "sanitize-html";
-import type {
-  Category,
-  ArticleCategory,
-  Article,
-  Comment,
-  PaginatedResponse,
-} from "./types";
-import { REVALIDATE_CATEGORIES, REVALIDATE_ARTICLES } from "./constants";
-
-// Re-export semua types agar semua existing import dari "@/lib/api" tetap berfungsi
-export type { Category, ArticleCategory, Article, Comment, PaginatedResponse };
 
 // Server-side only env var — tidak terekspos ke client bundle
 const BASE_URL = process.env.API_URL || "http://localhost:3008/api";
 
-// Types didefinisikan di lib/types.ts dan di-re-export di atas
-// (dipindahkan agar Client Component bisa import type tanpa menarik sanitize-html)
+// ── Types ──────────────────────────────────────────────────
+
+export type Category = {
+  id: number;
+  name: string;
+  slug: string;
+  createdAt: string;
+};
+
+export type ArticleCategory = {
+  name: string;
+  slug: string;
+};
+
+export type Article = {
+  id: number;
+  title: string;
+  author: string;
+  slug: string;
+  content?: string;
+  thumbnail: string;
+  category: ArticleCategory;
+  publishedAt: string;
+  likes?: number;
+};
+
+export type Comment = {
+  id: number;
+  articleId: number;
+  name: string;
+  content: string;
+  createdAt: string;
+};
+
+export type PaginatedResponse<T> = {
+  success: boolean;
+  data: T[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+};
 
 type ApiResponse<T> = {
   success: boolean;
@@ -24,7 +56,6 @@ type ApiResponse<T> = {
 };
 
 // ── Sanitize HTML (mencegah XSS) ──────────────────────────
-
 const SANITIZE_OPTIONS: sanitize.IOptions = {
   allowedTags: sanitize.defaults.allowedTags.concat([
     "img",
@@ -42,43 +73,42 @@ const SANITIZE_OPTIONS: sanitize.IOptions = {
   },
   allowedIframeHostnames: ["www.youtube.com", "player.vimeo.com"],
 };
-
 export function sanitizeContent(html: string): string {
   return sanitize(html, SANITIZE_OPTIONS);
 }
 
 // ── API Functions (Server Component only) ─────────────────
-
-export async function getCategories(): Promise<Category[]> {
-  try {
-    const res = await fetch(`${BASE_URL}/categories`, {
-      next:{revalidate: REVALIDATE_CATEGORIES},
-    });
-    if (!res.ok) throw new Error("Gagal mengambil kategori");
-    const json: ApiResponse<Category[]> = await res.json();
-    return json.data || [];
-  } catch (error) {
-    console.error("[API Error] getCategories failed:", error);
-    return [];
+export const getCategories: () => Promise<Category[]> = cache(
+  async (): Promise<Category[]> => {
+    try {
+      const res = await fetch(`${BASE_URL}/categories`, {
+        cache: "no-store",
+      });
+      if (!res.ok) throw new Error("Gagal mengambil kategori");
+      const json: ApiResponse<Category[]> = await res.json();
+      return json.data || [];
+    } catch (error) {
+      console.error("[API Error] getCategories failed:", error);
+      return [];
+    }
   }
-}
+);
 
-export async function getCategoryBySlug(
-  slug: string,
-): Promise<Category | null> {
-  try {
-    const res = await fetch(`${BASE_URL}/categories/${slug}`, {
-      next:{revalidate:REVALIDATE_CATEGORIES},
-    });
-
-    if (res.status === 404 || !res.ok) return null;
-    const json: ApiResponse<Category> = await res.json();
-    return json.data;
-  } catch (error) {
-    console.error(`[API Error] getCategoryBySlug(${slug}) failed:`, error);
-    return null;
+export const getCategoryBySlug: (slug: string) => Promise<Category | null> = cache(
+  async (slug: string): Promise<Category | null> => {
+    try {
+      const res = await fetch(`${BASE_URL}/categories/${slug}`, {
+        cache: "no-store",
+      });
+      if (res.status === 404 || !res.ok) return null;
+      const json: ApiResponse<Category> = await res.json();
+      return json.data;
+    } catch (error) {
+      console.error(`[API Error] getCategoryBySlug(${slug}) failed:`, error);
+      return null;
+    }
   }
-}
+);
 
 // Article
 type ArticleParams = {
@@ -108,7 +138,7 @@ export async function getArticles(
 
     const queryString = query.toString();
     const url = `${BASE_URL}/articles${queryString ? `?${queryString}` : ""}`;
-    const res = await fetch(url, { next:{revalidate:REVALIDATE_ARTICLES} });
+    const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) return emptyResponse;
     return await res.json();
   } catch (error) {
@@ -120,7 +150,7 @@ export async function getArticles(
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
   try {
     const res = await fetch(`${BASE_URL}/articles/${slug}`, {
-      next:{revalidate:REVALIDATE_ARTICLES},
+      cache: "no-store",
     });
     if (res.status === 404 || !res.ok) return null;
     const json: ApiResponse<Article> = await res.json();
@@ -135,7 +165,7 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
 export async function getComments(articleId: number): Promise<Comment[]> {
   try {
     const res = await fetch(`${BASE_URL}/comments/${articleId}`, {
-      next:{revalidate:REVALIDATE_ARTICLES},
+      cache: "no-store",
     });
     if (!res.ok) return [];
     const json: ApiResponse<Comment[]> = await res.json();
