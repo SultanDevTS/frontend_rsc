@@ -1,6 +1,4 @@
-'use client';
-
-// components/ads/AdArticleMid.client.tsx — Client Component
+// components/ads/AdArticleMid.tsx — Server Component
 // Mid-article ad: tampil di tengah konten artikel detail
 
 import AdLabel from "@/components/ads/AdLabel";

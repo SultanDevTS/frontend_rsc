@@ -1,6 +1,4 @@
-'use client';
-
-// components/ads/AdInFeed.client.tsx — Client Component
+// components/ads/AdInFeed.tsx — Server Component
 // In-feed native ad: disisipkan di dalam grid artikel
 
 import AdLabel from "@/components/ads/AdLabel";

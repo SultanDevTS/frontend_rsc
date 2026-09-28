@@ -4,9 +4,9 @@ import Link from "next/link";
 import { getArticles, getCategories } from "@/lib/api";
 import type { Article, Category } from "@/lib/api";
 import ArticleCard from "@/components/article/ArticleCard";
-import AdBillboard from "@/components/ads/AdBillboard.client";
-import AdMediumRect from "@/components/ads/AdMediumRect.client";
-import AdInFeed from "@/components/ads/AdInFeed.client";
+import AdBillboard from "@/components/ads/AdBillboard";
+import AdMediumRect from "@/components/ads/AdMediumRect";
+import AdInFeed from "@/components/ads/AdInFeed";
 import { formatDate } from "@/utils/formatDate";
 
 export const dynamic = "force-dynamic";
@@ -77,7 +77,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                   src={featuredArticle.thumbnail}
                   alt={featuredArticle.title}
                   fill
-                  priority
+                  fetchPriority="high"
+                  loading="eager"
                   sizes="(max-width: 1152px) 100vw, 1152px"
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />

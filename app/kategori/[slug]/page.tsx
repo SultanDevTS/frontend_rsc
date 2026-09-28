@@ -8,9 +8,9 @@ import ArticleCard from "@/components/article/ArticleCard";
 import CategoryHeader from "@/components/category/CategoryHeader";
 import FilterBar from "@/components/category/FilterBar.client";
 import Pagination from "@/components/category/Pagination";
-import AdBillboard from "@/components/ads/AdBillboard.client";
-import AdMediumRect from "@/components/ads/AdMediumRect.client";
-import AdInFeed from "@/components/ads/AdInFeed.client";
+import AdBillboard from "@/components/ads/AdBillboard";
+import AdMediumRect from "@/components/ads/AdMediumRect";
+import AdInFeed from "@/components/ads/AdInFeed";
 
 type Props = {
   params: Promise<{ slug: string }>;

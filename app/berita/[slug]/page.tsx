@@ -11,7 +11,7 @@ import RelatedArticles from "@/components/article/RelatedArticles";
 import CommentSection from "@/components/comment/CommentSection";
 import JsonLd from "@/components/ui/JsonLd";
 import { SITE_NAME } from "@/lib/constants";
-import AdArticleMid from "@/components/ads/AdArticleMid.client";
+import AdArticleMid from "@/components/ads/AdArticleMid";
 import AdStickyFooter from "@/components/ads/AdStickyFooter.client";
 
 
@@ -101,7 +101,8 @@ export default async function BeritaDetailPage({ params }: Props) {
               src={article.thumbnail}
               alt={article.title}
               fill
-              priority
+              fetchPriority="high"
+              loading="eager"
               sizes="(max-width: 896px) 100vw, 896px"
               className="object-cover"
             />

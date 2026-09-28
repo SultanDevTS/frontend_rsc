@@ -1,6 +1,4 @@
-'use client';
-
-// components/ads/AdMediumRect.client.tsx — Client Component
+// components/ads/AdMediumRect.tsx — Server Component
 // Medium Rectangle: 300×250 — sidebar kanan
 
 import AdLabel from "@/components/ads/AdLabel";

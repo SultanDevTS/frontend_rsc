@@ -1,6 +1,4 @@
-'use client';
-
-// components/ads/AdBillboard.client.tsx — Client Component
+// components/ads/AdBillboard.tsx — Server Component
 // Billboard / Leaderboard: 728×90 — di bawah hero dan atas halaman kategori
 
 import AdLabel from "@/components/ads/AdLabel";
