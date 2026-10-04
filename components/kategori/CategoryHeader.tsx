@@ -13,7 +13,6 @@ export default function CategoryHeader({ category, totalArticles }: Props) {
     <div className="space-y-2">
       <Link
         href="/"
-        prefetch={false}
         className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors"
       >
         ← Kembali ke Beranda

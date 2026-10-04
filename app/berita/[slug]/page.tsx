@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { getArticleBySlug } from "@/lib/api";
 
@@ -164,13 +165,35 @@ export default async function BeritaDetailPage({ params }: Props) {
         </div>
 
         {/* Related Articles */}
-        <RelatedArticles
-          categorySlug={article.category.slug}
-          excludeSlug={article.slug}
-        />
+        <Suspense
+          fallback={
+            <div className="space-y-4">
+              <div className="h-6 w-36 bg-gray-200 rounded animate-pulse" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="h-48 bg-gray-200 rounded-xl animate-pulse" />
+                <div className="h-48 bg-gray-200 rounded-xl animate-pulse" />
+                <div className="h-48 bg-gray-200 rounded-xl animate-pulse" />
+              </div>
+            </div>
+          }
+        >
+          <RelatedArticles
+            categorySlug={article.category.slug}
+            excludeSlug={article.slug}
+          />
+        </Suspense>
 
         {/* Comments */}
-        <CommentSection articleId={article.id} />
+        <Suspense
+          fallback={
+            <div className="space-y-4">
+              <div className="h-6 w-32 bg-gray-200 rounded animate-pulse" />
+              <div className="h-32 bg-gray-200 rounded-xl animate-pulse" />
+            </div>
+          }
+        >
+          <CommentSection articleId={article.id} />
+        </Suspense>
 
         {/* Back Link */}
         <div className="pt-6 border-t border-gray-200">
