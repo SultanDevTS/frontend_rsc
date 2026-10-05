@@ -1,9 +1,9 @@
 // components/article/ArticleCard.tsx — Server Component
 
-import Link from "next/link";
 import Image from "next/image";
-import { Article } from "@/lib/types";
-import CategoryBadge from "@/components/article/CategoryBadge";
+import Link from "next/link";
+
+import type { Article } from "@/lib/types";
 import { formatDate } from "@/utils/formatDate";
 
 type Props = {
@@ -13,13 +13,9 @@ type Props = {
 
 export default function ArticleCard({ article, priority = false }: Props) {
   return (
-    <article
-      className="bg-white rounded-xl overflow-hidden shadow-sm 
-                        border border-gray-100 hover:shadow-md transition-shadow"
-    >
-      {/* Thumbnail */}
+    <article className="group">
       <Link href={`/berita/${article.slug}`}>
-        <div className="relative w-full h-48">
+        <div className="relative aspect-[16/9] overflow-hidden rounded-xl bg-gray-100">
           {article.thumbnail ? (
             <Image
               src={article.thumbnail}
@@ -27,40 +23,34 @@ export default function ArticleCard({ article, priority = false }: Props) {
               fill
               loading={priority ? "eager" : undefined}
               fetchPriority={priority ? "high" : undefined}
-              sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 300px"
-              className="object-cover"
+              sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
-            <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-sm">
+            <div className="flex h-full w-full items-center justify-center text-gray-400">
               No Image
             </div>
           )}
         </div>
-      </Link>
 
-      <div className="p-4 space-y-2">
-        {/* CategoryBadge menerima { name, slug } — sesuai ArticleCategory */}
-        <CategoryBadge category={article.category} />
+        <div className="mt-3">
+          <div className="mb-2 flex items-center gap-2 text-xs text-gray-500">
+            <span className="font-medium text-blue-600">
+              {article.category?.name}
+            </span>
 
-        <Link href={`/berita/${article.slug}`}>
-          <h2
-            className="font-bold text-gray-900 text-base leading-snug
-                         hover:text-blue-600 transition-colors line-clamp-2"
-          >
+            <span>•</span>
+
+            <span>{formatDate(article.publishedAt)}</span>
+          </div>
+
+          <h3 className="line-clamp-2 text-lg font-semibold leading-snug text-gray-900 transition-colors group-hover:text-blue-600">
             {article.title}
-          </h2>
-        </Link>
+          </h3>
 
-        {/* Author + Tanggal */}
-        <div className="flex items-center justify-between pt-1">
-          <span className="text-gray-500 text-xs font-medium">
-            {article.author}
-          </span>
-          <span className="text-gray-400 text-xs">
-            {formatDate(article.publishedAt)}
-          </span>
+          <div className="mt-2 text-sm text-gray-500">{article.author}</div>
         </div>
-      </div>
+      </Link>
     </article>
   );
 }
